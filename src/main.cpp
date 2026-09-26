@@ -32,10 +32,13 @@ static constexpr float TEMPERATURE   = 0.0f;
 static constexpr size_t ARENA_SIZE   = 4096 * 1024;
 static MemoryArena* arena = nullptr;
 #else
-static constexpr int INFER_CTX       = 64;
+// Runtime heap on the ESP32 Dev Module has ~114 KB maximum contiguous block.
+// A 48-token context keeps the working arena below that limit while staying
+// within the model's trained block_size=64.
+static constexpr int INFER_CTX       = 48;
 static constexpr int MAX_GEN_TOKENS  = 80;
 static constexpr float TEMPERATURE   = 0.0f;
-static constexpr size_t ARENA_SIZE   = 160 * 1024;
+static constexpr size_t ARENA_SIZE   = 111 * 1024;
 static MemoryArena* arena = nullptr;
 #endif
 
@@ -603,8 +606,9 @@ void setup() {
 #endif
 
     if (!arena || !arena->is_valid() || !alloc_buffers()) {
-        Serial.printf("[FAIL] Memory arena allocation failed (need %u KB, free %u B)\n",
-                      (unsigned)(ARENA_SIZE / 1024), (unsigned)ESP.getFreeHeap());
+        Serial.printf("[FAIL] Memory arena allocation failed (need %u KB, free %u B, max block %u B)\n",
+                      (unsigned)(ARENA_SIZE / 1024), (unsigned)ESP.getFreeHeap(),
+                      (unsigned)ESP.getMaxAllocHeap());
         return;
     }
     Serial.printf("[OK] Memory Arena: %u KB (%u / %u B mapped)\n",

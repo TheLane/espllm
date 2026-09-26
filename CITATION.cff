@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+title: "ESP-LLM on ESP32: trained, quantized and verified"
+message: "Please cite the upstream ESP-LLM project and this documented ESP32 continuation."
+type: software
+authors:
+  - name: "Ahmed Barakat"
+    alias: "ahmedbarakat207"
+    affiliation: "Original ESP-LLM author"
+  - name: "TheLane"
+    affiliation: "ESP32 training, recovery, documentation and hardware verification"
+repository-code: "https://github.com/TheLane/espllm"
+url: "https://github.com/TheLane/espllm"
+keywords:
+  - ESP32
+  - LLM
+  - embedded AI
+  - TinyML
+  - Mixture of Experts
+  - MoE
+  - BitNet
+  - ternary quantization
+  - language model
+  - microcontroller
+  - Google Colab
